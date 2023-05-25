@@ -18,7 +18,7 @@ func CreateLinkedNodeWithData[T any](data T) *LinkedNode[T] {
 }
 
 func (node *LinkedNode[T]) AppendData(data T) {
-	node.nextNode = CreateLinkedNodeWithData(data)
+	node.nextNode = CreateLinkedNodeWithData[T](data)
 }
 
 type DoublyLinkedNode[T any] struct {
@@ -40,6 +40,6 @@ func CreateDoublyLinkedNodeWithData[T any](data T) *DoublyLinkedNode[T] {
 }
 
 func (node *DoublyLinkedNode[T]) AppendData(data T) {
-	node.nextNode = CreateDoublyLinkedNodeWithData(data)
+	node.nextNode = CreateDoublyLinkedNodeWithData[T](data)
 	node.nextNode.previousNode = node
 }
