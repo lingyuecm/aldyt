@@ -52,23 +52,24 @@ func (s *FixedStack[T]) ElementCount() int {
 }
 
 type LinkedStack[T any] struct {
-	top  *DoublyLinkedNode[T]
+	top  *LinkedNode[T]
 	size int
 }
 
 func CreateLinkedStack[T any]() *LinkedStack[T] {
 	s := new(LinkedStack[T])
 
-	s.top = new(DoublyLinkedNode[T])
+	s.top = nil
 	s.size = 0
 
 	return s
 }
 
 func (s *LinkedStack[T]) Push(element T) error {
-	s.top.AppendData(element)
+	top := CreateLinkedNodeWithData[T](element)
+	top.nextNode = s.top
+	s.top = top
 	s.size = s.size + 1
-	s.top = s.top.nextNode
 	return nil
 }
 
@@ -77,12 +78,8 @@ func (s *LinkedStack[T]) Pop() (T, error) {
 		return *new(T), errors.New(fmt.Sprintf("Empty Stack"))
 	}
 	s.size = s.size - 1
-
 	node := s.top
-	s.top = node.previousNode
-
-	s.top.nextNode = nil
-	node.previousNode = nil
+	s.top = s.top.nextNode
 
 	return node.data, nil
 }
